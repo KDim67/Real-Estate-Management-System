@@ -1,0 +1,60 @@
+<!-- Template for displaying list of tenants -->
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Tenants - Real Estate Management</title>
+  <link rel="stylesheet" th:href="@{/css/table-styles.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<!-- Main content section -->
+<div layout:fragment="main-content">
+  <div class="container mt-4">
+    <!-- Enhanced header section -->
+    <div class="page-header">
+      <h2><i class="fas fa-users me-2"></i>Tenants</h2>
+    </div>
+
+    <!-- Enhanced table container -->
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Surname</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tenant : ${tenants}">
+          <td th:text="${tenant.firstName}"></td>
+          <td th:text="${tenant.lastName}"></td>
+          <td th:text="${tenant.email}"></td>
+          <td>
+            <div class="btn-group">
+              <a th:href="@{/tenants/view/{id}(id=${tenant.id})}" class="btn btn-sm">View</a>
+              <a th:href="@{/tenants/{id}(id=${tenant.id})}" class="btn btn-sm">Edit</a>
+              <form th:action="@{/tenants/{id}/delete(id=${tenant.id})}" method="post" 
+                    onsubmit="return confirm('Are you sure you want to delete this tenant?')">
+                <button type="submit" class="btn btn-sm btn-delete">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Enhanced no tenants message -->
+    <div th:if="${#lists.isEmpty(tenants)}" class="alert alert-info mt-3">
+      No tenants found!
+    </div>
+  </div>
+</div>
+</body>
+</html>

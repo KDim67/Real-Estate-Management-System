@@ -1,0 +1,91 @@
+<!-- Template for managing all reports -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports Management</title>
+    <link rel="stylesheet" href="/css/table-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div layout:fragment="main-content">
+    <div class="container mt-4">
+        <div class="page-header">
+            <h2><i class="fas fa-file-alt me-2"></i>Reports Management</h2>
+        </div>
+
+        <!-- Error message display -->
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i><span th:text="${error}"></span>
+        </div>
+
+        <!-- Filter section -->
+        <div class="filter-section">
+            <span><i class="fas fa-filter me-2"></i>Filter by Status:</span>
+            <div class="mt-2">
+                <a href="/reports/list" class="btn-filter" th:classappend="${filter == null} ? 'active' : ''">All</a>
+                <a href="/reports/list?filter=Pending" class="btn-filter" th:classappend="${filter == 'Pending'} ? 'active' : ''">Pending</a>
+                <a href="/reports/list?filter=Approved" class="btn-filter" th:classappend="${filter == 'Approved'} ? 'active' : ''">Approved</a>
+            </div>
+        </div>
+
+        <!-- Empty state message -->
+        <div th:if="${#lists.isEmpty(reports)}" class="alert alert-info">
+            There are no reports to display.
+        </div>
+
+        <!-- Reports table -->
+        <div th:if="${not #lists.isEmpty(reports)}" class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>User Email</th>
+                        <th>Estate</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Report Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="report : ${reports}">
+                        <td th:text="${report.reportId}"></td>
+                        <td th:text="${report.title}"></td>
+                        <td th:text="${report.user != null ? report.user.email : 'N/A'}"></td>
+                        <td th:text="${report.application != null ? report.application.estate.title : 'N/A'}"></td>
+                        <td th:text="${report.description}"></td>
+                        <td>
+                            <span th:if="${report.status == null || report.status.name() == 'Pending'}" class="status-badge pending">Pending</span>
+                            <span th:if="${report.status != null && report.status.name() == 'Approved'}" class="status-badge approved">Approved</span>
+                        </td>
+                        <td th:text="${#dates.format(report.reportDate, 'dd-MM-yyyy HH:mm')}"></td>
+                        <td>
+                            <div class="btn-group">
+                                <!-- Approve report form -->
+                                <form th:if="${report.status == null || report.status.name() == 'Pending'}"
+                                      th:action="@{/reports/approve/{id}(id=${report.reportId})}" 
+                                      method="post">
+                                    <button type="submit" class="btn btn-sm btn-approve">Approve</button>
+                                </form>
+                                <!-- Delete report form -->
+                                <form th:action="@{/reports/delete/{reportId}(reportId=${report.reportId})}" 
+                                      method="post"
+                                      onsubmit="return confirm('Are you sure you want to delete this report?');">
+                                    <button type="submit" class="btn btn-sm btn-delete">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

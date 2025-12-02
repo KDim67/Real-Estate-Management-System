@@ -1,0 +1,63 @@
+<!-- Base layout template for all pages -->
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Real Estate Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Base layout styles -->
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 56px;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        footer {
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Include header -->
+    <div th:replace="page_layout/header :: header"></div>
+
+    <!-- Main content area -->
+    <main>
+        <div class="container">
+            <!-- Content placeholder -->
+            <div layout:fragment="main-content">
+                <p></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Include footer -->
+    <div th:replace="page_layout/footer :: footer"></div>
+
+    <!-- Bootstrap JS and navigation script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set active navigation link based on current path
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('data-path') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
