@@ -1,4 +1,4 @@
-# Real Estates Management System
+# Real Estate Management System
 
 A comprehensive web application for managing real estate properties, facilitating interactions between property owners and tenants. Built with Spring Boot and Thymeleaf.
 
@@ -34,8 +34,8 @@ A comprehensive web application for managing real estate properties, facilitatin
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/KDim67/Real-Estates-Management-System.git
-    cd Real-Estates-Management-System
+    git clone https://github.com/KDim67/Real-Estate-Management-System.git
+    cd Real-Estate-Management-System
     ```
 
 2.  **Database Configuration**
